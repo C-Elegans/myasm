@@ -1,0 +1,34 @@
+Register Op
+--------------------------------
+|opcode|rd       |rs      |xxx|0|
+--------------------------------
+4bits   3bits    3bits      5bits
+
+Imm Op
+--------------------------------
+|Opcode|rd    |data           |1|
+--------------------------------
+4bits   3bits  8bits
+
+Opcodes:
+0x0   nop
+0x1   add
+0x2   sub
+0x3   or
+0x4   and
+0x5   not
+0x6   xor
+0x7   lsl
+0x8   lsr
+0x9   mov
+0xA   cmp
+0xB   ldr
+0xC   str
+0xD   push
+0xE   pop
+0xF   jmp
+
+
+Registers
+0-6 r0-r7
+7 pc
