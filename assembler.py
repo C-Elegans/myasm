@@ -50,6 +50,9 @@ for line in file:
             print '#' + str(data)
             out = (op <<11) | (rd <<8) | (data <<1) | 1
             print format(out,'0x')
+    else if(op == opcodes["jmp"]):
+        data = int(instruction[1][1:])
+        out = (op <<11) | (data<<1) | 1
     else:
         out = 0
     out_h = (out & 0xff00) >>8
