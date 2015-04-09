@@ -37,7 +37,7 @@ for line in file:
     print instruction
     op = opcodes[instruction[0]]
     print str(op) + " ",
-    if(op != opcodes["nop"]):
+    if(op != opcodes["nop"] and op != opcodes["jmp"]):
         rd = registers[instruction[1]]
         print str(rd) + " ",
         if(not '#' in instruction[2]):
