@@ -28,6 +28,11 @@ registers = {
     "r7"    : 7,
     "pc"    : 7,
 }
+conditions = {
+    "eq" : 1,
+    "gt" : 2,
+    "lt" : 3,
+}
 f = open(sys.argv[1], 'r')
 o = open(sys.argv[2], 'wb')
 file = f.readlines()
@@ -51,8 +56,13 @@ for line in file:
             out = (op <<11) | (rd <<8) | (data <<1) | 1
             print format(out,'0x')
     elif(op == opcodes["jmp"]):
-        data = int(instruction[1][1:])
-        out = (op <<11) | (data<<1) | 1
+        if len(instruction == 2):
+            data = int(instruction[1][1:])
+            out = (op <<11) | (data<<1) | 1
+        else:
+            data = int(instruction[2][1:])
+            cond = conditions[instruction[1]]
+            out = (op <<11) | (cond <<8) |(data<<1) | 1
     else:
         out = 0
     out_h = (out & 0xff00) >>8

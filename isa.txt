@@ -10,25 +10,37 @@ Imm Op
 --------------------------------
 4bits   3bits  8bits
 
+Jmp Imm
+
+--------------------------------
+|1111|cond|data               |1|
+--------------------------------
+4b   3b   8b                  1b
 Opcodes:
-0x0   nop
-0x1   add
-0x2   sub
-0x3   or
-0x4   and
-0x5   not
-0x6   xor
-0x7   lsl
-0x8   lsr
-0x9   mov
+0x0   nop X
+0x1   add X
+0x2   sub X
+0x3   or  X
+0x4   and X
+0x5   not X
+0x6   xor X
+0x7   lsl X
+0x8   lsr X
+0x9   mov X
 0xA   cmp
-0xB   ldr
+0xB   ldr X
 0xC   str
 0xD   push
 0xE   pop
-0xF   jmp
+0xF   jmp X
 
 
 Registers
 0-6 r0-r7
 7 pc
+
+Conditions
+000 Always taken
+001 Jump if equal
+010 jump if greater than
+011 jump if less than
