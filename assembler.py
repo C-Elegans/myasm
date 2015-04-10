@@ -31,7 +31,7 @@ registers = {
 conditions = {
     "eq" : 1,
     "gt" : 2,
-    "lt" : 3,
+    "lt" : 4,
 }
 f = open(sys.argv[1], 'r')
 o = open(sys.argv[2], 'wb')
@@ -56,13 +56,14 @@ for line in file:
             out = (op <<11) | (rd <<8) | (data <<1) | 1
             print format(out,'0x')
     elif(op == opcodes["jmp"]):
-        if len(instruction == 2):
+        if len(instruction) == 2:
             data = int(instruction[1][1:])
             out = (op <<11) | (data<<1) | 1
         else:
             data = int(instruction[2][1:])
             cond = conditions[instruction[1]]
             out = (op <<11) | (cond <<8) |(data<<1) | 1
+	print format(out,'0b')
     else:
         out = 0
     out_h = (out & 0xff00) >>8
