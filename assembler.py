@@ -13,8 +13,8 @@ opcodes = { 'nop'   : 0,
             'cmp'   : 10,
             'ldr'   : 11,
             'str'   : 12,
-            'push'  : 13,
-            'pop'   : 14,
+            'in'  : 13,
+            'out'   : 14,
             'jmp'   : 15,
 }
 registers = {
@@ -38,43 +38,46 @@ conditions = {
 f = open(sys.argv[1], 'r')
 o = open(sys.argv[2], 'wb')
 file = f.readlines()
+count = 0
 for line in file:
-
+    print '0x'+format(count,'0x')+": ",	
     instruction = line.split()
-    if len(instruction) != 0:
-        print instruction
-        op = opcodes[instruction[0]]
-        print str(op) + " ",
-        if(op != opcodes["nop"] and op != opcodes["jmp"]):
-            rd = registers[instruction[1]]
-            print str(rd) + " ",
-            if(not '#' in instruction[2]):
-                rs = registers[instruction[2]]
-                print rs
-                out = (op <<11) | (rd <<8) | (rs <<5) | 0
-                print format(out,'0x')
-            else:
-                data = int(instruction[2][1:])
-                print '#' + str(data)
-                out = (op <<11) | (rd <<8) | (data <<1) | 1
-                print format(out,'0x')
-        elif(op == opcodes["jmp"]):
-            if len(instruction) == 2:
-                data = int(instruction[1][1:])
-                out = (op <<11) | (data<<1) | 1
-            else:
-                data = int(instruction[2][1:])
-                cond = conditions[instruction[1]]
-                out = (op <<11) | (cond <<8) |(data<<1) | 1
-    	        print format(out,'0b')
+    print instruction[0] + "  ",
+    op = opcodes[instruction[0]]
+ #   print str(op) + " ",
+    if(op != opcodes["nop"] and op != opcodes["jmp"]):
+        rd = registers[instruction[1]]
+#        print str(rd) + " ",
+        if(not '#' in instruction[2]):
+            rs = registers[instruction[2]]
+ #           print rs
+            out = (op <<11) | (rd <<8) | (rs <<5) | 0
+#            print format(out,'0x')
         else:
-            out = 0
-        out_h = (out & 0xff00) >>8
-        out_l = out & 0xff
+            data = int(instruction[2][1:])
+#            print '#' + str(data)
+            out = (op <<11) | (rd <<8) | (data <<1) | 1
+#            print format(out,'0x')
+    elif(op == opcodes["jmp"]):
+        if len(instruction) == 2:
+            data = int(instruction[1][1:])
+            out = (op <<11) | (data<<1) | 1
+        else:
+            data = int(instruction[2][1:])
+            cond = conditions[instruction[1]]
+            out = (op <<11) | (cond <<8) |(data<<1) | 1
+	
+#	print format(out,'0b')
+    else:
+        out = 0
+#	print format(out,'04x')
+    print format(out,'16b')
+    out_h = (out & 0xff00) >>8
+    out_l = out & 0xff
 
-        bytes_arr = [out_h,out_l]
-        arr = bytearray(bytes_arr)
-        o.write(arr)
-
+    bytes_arr = [out_h,out_l]
+    arr = bytearray(bytes_arr)
+    o.write(arr)
+    count += 1
 o.flush()
 o.close()
