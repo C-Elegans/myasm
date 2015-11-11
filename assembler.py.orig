@@ -42,24 +42,30 @@ count = 0
 for line in file:
     print '0x'+format(count,'0x')+": ",	
     instruction = line.split()
+    print instruction[0] + "  ",
+    if instruction[0][0] == ".":
+        if instruction[0] == ".dw":
+            print instruction[1]
+            out = int(instruction[1],0)
+        else:
+            out = 0    
+    else:
 <<<<<<< HEAD
-    if len(instruction) != 0:
-        print instruction
         op = opcodes[instruction[0]]
-        print str(op) + " ",
+     #   print str(op) + " ",
         if(op != opcodes["nop"] and op != opcodes["jmp"]):
             rd = registers[instruction[1]]
-            print str(rd) + " ",
+    #        print str(rd) + " ",
             if(not '#' in instruction[2]):
                 rs = registers[instruction[2]]
-                print rs
+     #           print rs
                 out = (op <<11) | (rd <<8) | (rs <<5) | 0
-                print format(out,'0x')
+    #            print format(out,'0x')
             else:
                 data = int(instruction[2][1:])
-                print '#' + str(data)
+    #            print '#' + str(data)
                 out = (op <<11) | (rd <<8) | (data <<1) | 1
-                print format(out,'0x')
+    #            print format(out,'0x')
         elif(op == opcodes["jmp"]):
             if len(instruction) == 2:
                 data = int(instruction[1][1:])
@@ -68,45 +74,13 @@ for line in file:
                 data = int(instruction[2][1:])
                 cond = conditions[instruction[1]]
                 out = (op <<11) | (cond <<8) |(data<<1) | 1
-    	        print format(out,'0b')
+    
+    #	print format(out,'0b')
         else:
             out = 0
-        out_h = (out & 0xff00) >>8
-        out_l = out & 0xff
-
-        bytes_arr = [out_h,out_l]
-        arr = bytearray(bytes_arr)
-        o.write(arr)
-
 =======
-    print instruction[0] + "  ",
-    op = opcodes[instruction[0]]
- #   print str(op) + " ",
-    if(op != opcodes["nop"] and op != opcodes["jmp"]):
-        rd = registers[instruction[1]]
-#        print str(rd) + " ",
-        if(not '#' in instruction[2]):
-            rs = registers[instruction[2]]
- #           print rs
-            out = (op <<11) | (rd <<8) | (rs <<5) | 0
-#            print format(out,'0x')
-        else:
-            data = int(instruction[2][1:])
-#            print '#' + str(data)
-            out = (op <<11) | (rd <<8) | (data <<1) | 1
-#            print format(out,'0x')
-    elif(op == opcodes["jmp"]):
-        if len(instruction) == 2:
-            data = int(instruction[1][1:])
-            out = (op <<11) | (data<<1) | 1
-        else:
-            data = int(instruction[2][1:])
-            cond = conditions[instruction[1]]
-            out = (op <<11) | (cond <<8) |(data<<1) | 1
-	
-#	print format(out,'0b')
-    else:
         out = 0
+>>>>>>> 399ae11fd295322e69723e253b60a01f8aeb26ec
 #	print format(out,'04x')
     print format(out,'16b')
     out_h = (out & 0xff00) >>8
@@ -116,6 +90,5 @@ for line in file:
     arr = bytearray(bytes_arr)
     o.write(arr)
     count += 1
->>>>>>> bffb33e7e42d3fdcddd621eba516b2b14187c5d2
 o.flush()
 o.close()
