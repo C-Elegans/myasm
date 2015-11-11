@@ -4,4 +4,4 @@ test.asm
 output.bin
 *.hex
 output.hex
-
+*~
